@@ -11,10 +11,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $_POST['title'];
     $description = $_POST['description'];
     $duration = $_POST['duration'];
+    $start_time = !empty($_POST['start_time']) ? $_POST['start_time'] : null;
+    $end_time = !empty($_POST['end_time']) ? $_POST['end_time'] : null;
+    $is_proctored = isset($_POST['is_proctored']) ? 1 : 0;
     
     // Insert exam into the database
-    $stmt = $pdo->prepare("INSERT INTO exams (title, description, duration_minutes, created_by) VALUES (?, ?, ?, ?)");
-    $stmt->execute([$title, $description, $duration, $_SESSION['user_id']]);
+    $stmt = $pdo->prepare("INSERT INTO exams (title, description, duration_minutes, start_time, end_time, is_proctored, created_by) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->execute([$title, $description, $duration, $start_time, $end_time, $is_proctored, $_SESSION['user_id']]);
     
     $exam_id = $pdo->lastInsertId();
     
@@ -59,6 +62,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="form-group">
                 <label for="duration">Duration (minutes):</label>
                 <input type="number" id="duration" name="duration" min="1" value="30" required>
+            </div>
+
+            <div class="form-group">
+                <label for="start_time">Start Time:</label>
+                <input type="datetime-local" id="start_time" name="start_time">
+            </div>
+
+            <div class="form-group">
+                <label for="end_time">End Time:</label>
+                <input type="datetime-local" id="end_time" name="end_time">
+            </div>
+
+            <div class="form-group">
+                <label for="is_proctored">
+                    <input type="checkbox" id="is_proctored" name="is_proctored" value="1">
+                    Proctored Exam
+                </label>
             </div>
             
             <h2>Questions</h2>
