@@ -46,8 +46,8 @@ $questions = $stmt->fetchAll();
                     <h3><?php echo ($index + 1) . ". " . $question['question_text']; ?></h3>
                     <input type="hidden" name="questions[<?php echo $index; ?>][id]" value="<?php echo $question['id']; ?>">
                     <input type="hidden" name="questions[<?php echo $index; ?>][type]" value="<?php echo $question['question_type']; ?>">
-                    <?php if ($question['question_type'] == 'multiple_choice'): ?>
-                        <!-- Fetch options for multiple choice questions -->
+                    <?php if ($question['question_type'] == 'multiple_choice' || $question['question_type'] == 'single_choice'): ?>
+                        <!-- Fetch options for multiple choice and single choice questions -->
                         <?php
                         $stmt = $pdo->prepare("SELECT * FROM options WHERE question_id = ?");
                         $stmt->execute([$question['id']]);
@@ -65,6 +65,16 @@ $questions = $stmt->fetchAll();
                         <label>
                             <input type="radio" name="questions[<?php echo $index; ?>][answer]" value="false"> False
                         </label>
+                    <?php elseif ($question['question_type'] == 'fill_in_the_blanks'): ?>
+                        <input type="text" name="questions[<?php echo $index; ?>][answer]" required placeholder="Fill in the blank">
+                    <?php elseif ($question['question_type'] == 'essay'): ?>
+                        <textarea name="questions[<?php echo $index; ?>][answer]" rows="6" required></textarea>
+                    <?php elseif ($question['question_type'] == 'matching'): ?>
+                        <!-- Matching question UI -->
+                        <p>Matching question type is not yet implemented.</p>
+                    <?php elseif ($question['question_type'] == 'drag_and_drop'): ?>
+                        <!-- Drag and drop question UI -->
+                        <p>Drag and drop question type is not yet implemented.</p>
                     <?php else: ?>
                         <textarea name="questions[<?php echo $index; ?>][answer]" required></textarea>
                     <?php endif; ?>
