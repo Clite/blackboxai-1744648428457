@@ -30,7 +30,7 @@ CREATE TABLE questions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     exam_id INT NOT NULL,
     question_text TEXT NOT NULL,
-    question_type ENUM('multiple_choice', 'true_false', 'short_answer') NOT NULL,
+    question_type ENUM('multiple_choice', 'true_false', 'short_answer', 'single_choice', 'fill_in_the_blanks', 'essay', 'matching', 'drag_and_drop') NOT NULL,
     points INT NOT NULL DEFAULT 1,
     FOREIGN KEY (exam_id) REFERENCES exams(id) ON DELETE CASCADE
 );
