@@ -34,12 +34,35 @@ foreach ($answers as $answer) {
     // Check if the answer is correct (this logic will depend on your implementation)
     // For now, we will assume a correct answer is stored in the database
     // You may need to adjust this based on your actual data structure
-    $stmt = $pdo->prepare("SELECT is_correct FROM options WHERE question_id = ? AND id = ?");
-    $stmt->execute([$answer['question_id'], $answer['answer_text']]);
-    $is_correct = $stmt->fetchColumn();
-    
-    if ($is_correct) {
-        $score++;
+
+    // Fetch question type
+    $stmt = $pdo->prepare("SELECT question_type FROM questions WHERE id = ?");
+    $stmt->execute([$answer['question_id']]);
+    $question_type = $stmt->fetchColumn();
+
+    if (in_array($question_type, ['multiple_choice', 'single_choice', 'true_false'])) {
+        $stmt = $pdo->prepare("SELECT is_correct FROM options WHERE question_id = ? AND id = ?");
+        $stmt->execute([$answer['question_id'], $answer['answer_text']]);
+        $is_correct = $stmt->fetchColumn();
+        if ($is_correct) {
+            $score++;
+        }
+    } elseif ($question_type == 'fill_in_the_blanks') {
+        // Simple string comparison for fill in the blanks
+        // You may want to improve this with case-insensitive or partial matching
+        $stmt = $pdo->prepare("SELECT correct_answer FROM questions WHERE id = ?");
+        $stmt->execute([$answer['question_id']]);
+        $correct_answer = $stmt->fetchColumn();
+        if (trim(strtolower($answer['answer_text'])) == trim(strtolower($correct_answer))) {
+            $score++;
+        }
+    } elseif ($question_type == 'essay') {
+        // Essay questions require manual grading, so skip scoring here
+        continue;
+    } elseif (in_array($question_type, ['matching', 'drag_and_drop'])) {
+        // For matching and drag and drop, you may want to implement custom scoring logic
+        // For now, skip scoring
+        continue;
     }
 }
 
