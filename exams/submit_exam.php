@@ -21,6 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $question_id = $question['id'];
         $answer = $question['answer'];
         
+        // For matching and drag_and_drop, answer might be an array, so serialize it
+        if (is_array($answer)) {
+            $answer = json_encode($answer);
+        }
+        
         // Insert answer into the database
         $stmt = $pdo->prepare("INSERT INTO answers (attempt_id, question_id, answer_text) VALUES (?, ?, ?)");
         $stmt->execute([$attempt_id, $question_id, $answer]);
