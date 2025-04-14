@@ -88,6 +88,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label>Question Type:</label>
                     <select name="questions[${questionCount}][type]" class="question-type">
                         <option value="multiple_choice">Multiple Choice</option>
+                        <option value="single_choice">Single Choice</option>
+                        <option value="fill_in_the_blanks">Fill in the Blanks</option>
+                        <option value="essay">Essay</option>
+                        <option value="matching">Matching</option>
+                        <option value="drag_and_drop">Drag and Drop</option>
                         <option value="true_false">True/False</option>
                         <option value="short_answer">Short Answer</option>
                     </select>
