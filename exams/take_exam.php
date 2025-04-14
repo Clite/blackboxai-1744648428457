@@ -39,6 +39,13 @@ $questions = $stmt->fetchAll();
 <body>
     <div class="container">
         <h1><?php echo $exam['title']; ?></h1>
+
+        <?php if ($exam['is_proctored']): ?>
+            <div class="proctored-notice" style="padding: 10px; background-color: #ffdddd; border: 1px solid #ff0000; margin-bottom: 20px;">
+                <strong>Note:</strong> This is a proctored exam. Please ensure you follow all proctoring guidelines.
+            </div>
+        <?php endif; ?>
+
         <form method="POST" action="submit_exam.php">
             <input type="hidden" name="exam_id" value="<?php echo $exam_id; ?>">
             <?php foreach ($questions as $index => $question): ?>
