@@ -9,7 +9,16 @@ if (!isAdmin()) {
     exit();
 }
 
-// Fetch all users
+require_once '../includes/auth.php';
+redirectIfNotLoggedIn();
+
+if (!isAdmin()) {
+    header('Location: ../index.php');
+    exit();
+}
+
+// Fetch all goats
+$goats = $pdo->query("SELECT * FROM goats")->fetchAll(PDO::FETCH_ASSOC);
 $stmt = $pdo->query("SELECT id, username, email, role FROM users ORDER BY id DESC");
 $users = $stmt->fetchAll();
 
