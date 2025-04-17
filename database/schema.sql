@@ -2,6 +2,17 @@
 CREATE DATABASE IF NOT EXISTS exam_system;
 USE exam_system;
 
+-- Goats table
+CREATE TABLE goats (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    breed VARCHAR(50),
+    age INT,
+    health_status VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
 -- Users table
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
